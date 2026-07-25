@@ -14,6 +14,14 @@ def buscarId(id:int):
     cursor.execute(sql,(id,))
     return cursor.fetchone()
 
+def obtenerPerrosTutor(id:int):
+    sql = """
+    SELECT * FROM perros
+    WHERE tutorid = %s
+    """
+    cursor.execute(sql,(id,))
+    return cursor.fetchall()
+
 def crearPerro(perro:Perro):
     sql = """
      INSERT INTO perros (raza, genero, nombre, edad, foto, tutorid)
@@ -43,3 +51,4 @@ def eliminarPerro(id:int):
     """
     cursor.execute(sql,(id,))
     conexion.commit()
+
