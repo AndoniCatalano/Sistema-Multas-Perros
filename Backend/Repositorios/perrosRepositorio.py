@@ -6,7 +6,7 @@ def obtenerPerros():
     cursor.execute("SELECT * FROM perros")
     return cursor.fetchall()
 
-def buscarId(id:int):
+def buscarPerroId(id:int):
     sql = """
     SELECT * FROM perros
     WHERE id = %s

@@ -5,7 +5,7 @@ def obtenerMultas():
     cursor.execute("SELECT * FROM multas")
     return cursor.fetchall()
 
-def buscarId(id:int):
+def buscarMultaId(id:int):
     sql = """
     SELECT * FROM multas
     WHERE id = %s
