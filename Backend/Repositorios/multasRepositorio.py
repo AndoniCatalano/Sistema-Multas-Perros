@@ -37,18 +37,13 @@ def crearMulta(multa:Multa):
     cursor.execute(sql,(multa.monto, multa.fechahora,multa.perroid,multa.tutorid,multa.descripcion,multa.estado))
     conexion.commit()
 
-def editarMulta(multa:Multa, id:int):
+def editarEstadoMulta(estado:chr, id:int):
     sql = """
     UPDATE multas
-    SET monto = %s,
-        fechahora = %s,
-        perroid = %s,
-        tutorid = %s,
-        descripcion = %s,
-        estado = %s
+    SET estado = %s
     WHERE id = %s
     """
-    cursor.execute(sql,(multa.monto, multa.fechahora,multa.perroid,multa.tutorid,multa.descripcion,multa.estado, id))
+    cursor.execute(sql,(estado, id))
     conexion.commit()
 
 def eliminarMulta(id:int):
@@ -59,12 +54,3 @@ def eliminarMulta(id:int):
     cursor.execute(sql,(id,))
     conexion.commit()
 
-def totalMultasTutor(id: int):
-    multas = obtenerMultasTutor(id)
-    total = sum(multa["monto"] for multa in multas)
-    return total
-
-def totalMultasPerro(id: int):
-    multas = obtenerMultasPerro(id)
-    total = sum(multa["monto"] for multa in multas)
-    return total

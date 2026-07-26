@@ -30,6 +30,15 @@ def buscarTutorNombre(nombre:str):
     cursor.execute(sql, (f"%{nombre}%",))
     return cursor.fetchall()
 
+def buscarTutorTelefono(telefono:str):
+    sql = """
+    SELECT * FROM tutores
+    WHERE telefono = %s
+    """
+    cursor.execute(sql, (telefono,))
+    return cursor.fetchone()
+
+
 def crearTutor(tutor:Tutor):
     sql = """
     INSERT INTO tutores (nombre, telefono, direccion, dni)

@@ -14,6 +14,41 @@ def buscarPerroId(id:int):
     cursor.execute(sql,(id,))
     return cursor.fetchone()
 
+def buscarPerroColor(color: str):
+    sql = """
+    SELECT * FROM perros
+    WHERE color ILIKE %s
+    """
+    cursor.execute(sql, (f"%{color}%",))
+    return cursor.fetchall()
+
+
+def buscarPerroGenero(genero: str):
+    sql = """
+    SELECT * FROM perros
+    WHERE genero = %s
+    """
+    cursor.execute(sql, (genero,))
+    return cursor.fetchall()
+
+
+def buscarPerroNombre(nombre: str):
+    sql = """
+    SELECT * FROM perros
+    WHERE nombre ILIKE %s
+    """
+    cursor.execute(sql, (f"%{nombre}%",))
+    return cursor.fetchall()
+
+
+def buscarPerroRaza(raza: str):
+    sql = """
+    SELECT * FROM perros
+    WHERE raza ILIKE %s
+    """
+    cursor.execute(sql, (f"%{raza}%",))
+    return cursor.fetchall()
+
 def obtenerPerrosTutor(id:int):
     sql = """
     SELECT * FROM perros
@@ -41,7 +76,7 @@ def editarPerro(perro:Perro, id:int):
         tutorid = %s
     WHERE id = %s
     """
-    cursor.execute(sql,(perro.raza, perro.genero, perro.nombre, perro.edad, perro.foto, perro.tutorid,id))
+    cursor.execute(sql,(perro.raza, perro.genero, perro.nombre, perro.edad, perro.foto,id))
     conexion.commit()
 
 def eliminarPerro(id:int):
@@ -51,4 +86,3 @@ def eliminarPerro(id:int):
     """
     cursor.execute(sql,(id,))
     conexion.commit()
-
