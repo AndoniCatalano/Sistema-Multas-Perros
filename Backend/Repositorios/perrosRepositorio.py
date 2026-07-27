@@ -1,11 +1,6 @@
 from database import cursor, conexion
 from Modelos.perros import Perro
 
-
-def obtenerPerros():
-    cursor.execute("SELECT * FROM perros")
-    return cursor.fetchall()
-
 def buscarPerroId(id:int):
     sql = """
     SELECT * FROM perros
@@ -14,39 +9,28 @@ def buscarPerroId(id:int):
     cursor.execute(sql,(id,))
     return cursor.fetchone()
 
-def buscarPerroColor(color: str):
-    sql = """
-    SELECT * FROM perros
-    WHERE color ILIKE %s
-    """
-    cursor.execute(sql, (f"%{color}%",))
-    return cursor.fetchall()
+def ObtenerPerros(color: str = None, genero: str = None, nombre: str = None, raza: str = None):
+    sql = "SELECT * FROM perros"
+    condiciones = []
+    valores = []
 
+    if color:
+        condiciones.append("color ILIKE %s")
+        valores.append(f"%{color}%")
+    if genero:
+        condiciones.append("genero = %s")
+        valores.append(genero)
+    if nombre:
+        condiciones.append("nombre ILIKE %s")
+        valores.append(f"%{nombre}%")
+    if raza:
+        condiciones.append("raza ILIKE %s")
+        valores.append(f"%{raza}%")
 
-def buscarPerroGenero(genero: str):
-    sql = """
-    SELECT * FROM perros
-    WHERE genero = %s
-    """
-    cursor.execute(sql, (genero,))
-    return cursor.fetchall()
+    if condiciones:
+        sql += " WHERE " + " AND ".join(condiciones)
 
-
-def buscarPerroNombre(nombre: str):
-    sql = """
-    SELECT * FROM perros
-    WHERE nombre ILIKE %s
-    """
-    cursor.execute(sql, (f"%{nombre}%",))
-    return cursor.fetchall()
-
-
-def buscarPerroRaza(raza: str):
-    sql = """
-    SELECT * FROM perros
-    WHERE raza ILIKE %s
-    """
-    cursor.execute(sql, (f"%{raza}%",))
+    cursor.execute(sql,(tuple(valores)))
     return cursor.fetchall()
 
 def obtenerPerrosTutor(id:int):

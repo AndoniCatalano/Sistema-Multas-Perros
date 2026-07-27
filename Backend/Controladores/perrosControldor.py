@@ -12,21 +12,9 @@ def obtenerPerros():
 def buscarPerroId(id:int):
     return servicio.buscarPerroId(id)
 
-@router.get("/perros/color")
-def buscarPerroColor(color: str):
-    return servicio.buscarPerroColor(color)
-
-@router.get("/perros/genero")
-def buscarPerroGenero(genero: str):
-    return servicio.buscarPerroGenero(genero)
-
-@router.get("/perros/nombre")
-def buscarPerroNombre(nombre: str):
-    return servicio.buscarPerroNombre(nombre)
-
-@router.get("/perros/raza")
-def buscarPerroRaza(raza: str):
-    return servicio.buscarPerroRaza(raza)
+@router.get("/perros/buscar")
+def buscarPerrosAtributos(color: str = None, genero: str = None, nombre: str = None, raza: str = None):
+    return servicio.buscarPerrosAtributos(color,genero,nombre,raza)
 
 @router.get("/perros/tutorid")
 def obtenerPerrosTutor(id:int):

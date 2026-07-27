@@ -14,29 +14,24 @@ def buscarTutorId(id:int):
     cursor.execute (sql,(id,))
     return cursor.fetchone()
 
-def buscarTutorDni(dni:str):
-    sql = """
-    SELECT * FROM tutores
-    WHERE dni = %s
-    """
-    cursor.execute (sql,(dni,))
-    return cursor.fetchone()
+def buscarTutores(dni: str = None, nombre: str = None, telefono: str = None):
+    sql = "SELECT * FROM tutores"
 
-def buscarTutorNombre(nombre:str):
-    sql = """
-    SELECT * FROM tutores
-    WHERE nombre ILIKE %s
-    """
-    cursor.execute(sql, (f"%{nombre}%",))
-    return cursor.fetchall()
-
-def buscarTutorTelefono(telefono:str):
-    sql = """
-    SELECT * FROM tutores
-    WHERE telefono = %s
-    """
-    cursor.execute(sql, (telefono,))
-    return cursor.fetchone()
+    if dni is not None:
+        sql += " WHERE dni = %s"
+        cursor.execute(sql, (dni,))
+        return cursor.fetchone()
+    elif telefono is not None:
+        sql += " WHERE telefono = %s"
+        cursor.execute(sql, (telefono,))
+        return cursor.fetchone()
+    elif nombre is not None:
+        sql += " WHERE nombre LIKE %s"
+        cursor.execute(sql, (f"%{nombre}%",))
+        return cursor.fetchall()
+    else:
+        cursor.execute(sql)
+        return cursor.fetchall()
 
 
 def crearTutor(tutor:Tutor):

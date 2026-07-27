@@ -1,9 +1,6 @@
 from database import cursor, conexion
 from Modelos.multas import Multa
-
-def obtenerMultas():
-    cursor.execute("SELECT * FROM multas")
-    return cursor.fetchall()
+from datetime import datetime
 
 def buscarMultaId(id:int):
     sql = """
@@ -12,6 +9,31 @@ def buscarMultaId(id:int):
     """
     cursor.execute(sql,(id,))
     return cursor.fetchone()
+
+def ObtenerMultas(fechahora:datetime, estado:chr):
+    sql = "SELECT * FROM multas"
+    condiciones = []
+    valores = []
+    if fechahora:
+        condiciones.append(" YEAR(fechahora) = %s")
+        valores.append(fechahora.year)
+        if hasattr(fechahora,'month') and fechahora.month:
+            condiciones.append(" MONTH(fechahora) = %s")
+            valores.append(fechahora.month)
+            if hasattr(fechahora,'day') and fechahora.day:
+                condiciones.append(" DAY(fechahora) = %s")
+                valores.append(fechahora.day)
+                if hasattr(fechahora,'hour') and fechahora.hour:
+                    condiciones.append(" HOUR(fechahora) = %s")
+                    valores.append(fechahora.hour)
+    if estado:
+        condiciones.append("estado = %s")
+        valores.append(estado)
+    if condiciones:
+        sql += " WHERE " + " AND ".join(condiciones)
+
+    cursor.execute(sql,tuple(valores))
+    return cursor.fetchall()
 
 def obtenerMultasPerro(id:int):
     sql = """
