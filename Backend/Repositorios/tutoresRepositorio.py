@@ -1,11 +1,6 @@
 from Modelos.tutores import Tutor
 from database import cursor, conexion
 
-
-def obtenerTutores():
-    cursor.execute("SELECT * FROM tutores")
-    return cursor.fetchall() 
-
 def buscarTutorId(id:int):
     sql = """
     SELECT * FROM tutores
@@ -14,7 +9,7 @@ def buscarTutorId(id:int):
     cursor.execute (sql,(id,))
     return cursor.fetchone()
 
-def buscarTutores(dni: str = None, nombre: str = None, telefono: str = None):
+def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
     sql = "SELECT * FROM tutores"
 
     if dni is not None:
