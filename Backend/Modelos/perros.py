@@ -4,7 +4,7 @@ class Perro(BaseModel):
     id:int
     raza:str
     genero:str
-    nombre:str
+    nombrePerro:str
     color:str
     edad:int
     foto:str

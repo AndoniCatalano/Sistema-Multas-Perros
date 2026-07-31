@@ -3,14 +3,26 @@ from Modelos.perros import Perro
 
 def buscarPerroId(id:int):
     sql = """
-    SELECT * FROM perros
+    SELECT 
+        p.*,
+        t.nombreTutor AS nombreTutor,
+        t.direccion AS direccion,
+        t.telefono AS telefono
+    FROM perros AS p 
+    JOIN tutores t ON p.tutorid = t.id
     WHERE id = %s
     """
     cursor.execute(sql,(id,))
     return cursor.fetchone()
 
 def ObtenerPerros(color: str = None, genero: str = None, nombre: str = None, raza: str = None):
-    sql = "SELECT * FROM perros"
+    sql = """
+    SELECT 
+        p.*,
+        t.nombreTutor AS nombreTutor
+    FROM perros p 
+    JOIN tutores t ON p.tutorid = t.id
+    """
     condiciones = []
     valores = []
 
@@ -21,7 +33,7 @@ def ObtenerPerros(color: str = None, genero: str = None, nombre: str = None, raz
         condiciones.append("genero = %s")
         valores.append(genero)
     if nombre:
-        condiciones.append("nombre ILIKE %s")
+        condiciones.append("nombrePerro ILIKE %s")
         valores.append(f"%{nombre}%")
     if raza:
         condiciones.append("raza ILIKE %s")
@@ -43,7 +55,7 @@ def obtenerPerrosTutor(id:int):
 
 def crearPerro(perro:Perro):
     sql = """
-     INSERT INTO perros (raza, genero, nombre, edad, foto, tutorid)
+     INSERT INTO perros (raza, genero, nombrePerro, edad, foto, tutorid)
      VALUES (%s,%s,%s,%s,%s,%s)
     """
     cursor.execute(sql,(perro.raza, perro.genero, perro.nombre, perro.edad, perro.foto, perro.tutorid))
@@ -54,7 +66,7 @@ def editarPerro(perro:Perro, id:int):
     UPDATE perros 
     SET raza = %s, 
         genero = %s,
-        nombre = %s,
+        nombrePerro = %s,
         edad = %s, 
         foto = %s, 
         tutorid = %s

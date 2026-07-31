@@ -4,36 +4,53 @@ from datetime import datetime
 
 def buscarMultaId(id:int):
     sql = """
-    SELECT * FROM multas
-    WHERE id = %s
+    SELECT 
+        m.*,
+        t.nombreTutor AS nombreTutor,
+        t.direccion AS direccion,
+        t.telefono AS telefono,
+        p.nombrePerro AS nombrePerro
+    FROM multas m
+    JOIN tutores t ON m.tutorid = t.id
+    JOIN perros p ON m.perroid = p.id
+    WHERE m.id = %s
     """
     cursor.execute(sql,(id,))
     return cursor.fetchone()
 
-def ObtenerMultas(fechahora:datetime, estado:chr):
-    sql = "SELECT * FROM multas"
+def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int = None, estado: str = None):    
+    sql = """
+    SELECT 
+        m.*,
+        t.nombreTutor AS nombreTutor
+    FROM multas m
+    JOIN tutores t ON m.tutorid = t.id
+    """
     condiciones = []
     valores = []
-    if fechahora:
-        condiciones.append(" YEAR(fechahora) = %s")
-        valores.append(fechahora.year)
-        if hasattr(fechahora,'month') and fechahora.month:
-            condiciones.append(" MONTH(fechahora) = %s")
-            valores.append(fechahora.month)
-            if hasattr(fechahora,'day') and fechahora.day:
-                condiciones.append(" DAY(fechahora) = %s")
-                valores.append(fechahora.day)
-                if hasattr(fechahora,'hour') and fechahora.hour:
-                    condiciones.append(" HOUR(fechahora) = %s")
-                    valores.append(fechahora.hour)
-    if estado:
+
+    if anio is not None:
+        condiciones.append("EXTRACT(YEAR FROM fechahora) = %s")
+        valores.append(anio)
+    if mes is not None:
+        condiciones.append("EXTRACT(MONTH FROM fechahora) = %s")
+        valores.append(mes)
+    if dia is not None:
+        condiciones.append("EXTRACT(DAY FROM fechahora) = %s")
+        valores.append(dia)
+    if hora is not None:
+        condiciones.append("EXTRACT(HOUR FROM fechahora) = %s")
+        valores.append(hora)
+    if estado is not None:
         condiciones.append("estado = %s")
         valores.append(estado)
+
     if condiciones:
         sql += " WHERE " + " AND ".join(condiciones)
 
-    cursor.execute(sql,tuple(valores))
+    cursor.execute(sql, tuple(valores))
     return cursor.fetchall()
+
 
 def obtenerMultasPerro(id:int):
     sql = """
@@ -45,7 +62,11 @@ def obtenerMultasPerro(id:int):
 
 def obtenerMultasTutor(id:int):
     sql = """
-    SELECT * FROM multas
+    SELECT 
+        m.*,
+        p.nombrePerro AS nombrePerro
+    FROM multas m
+    JOIN perros p ON m.perroid = p.id
     WHERE tutorid = %s
     """
     cursor.execute(sql,(id,))

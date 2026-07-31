@@ -21,7 +21,7 @@ def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
         cursor.execute(sql, (telefono,))
         return cursor.fetchone()
     elif nombre is not None:
-        sql += " WHERE nombre LIKE %s"
+        sql += " WHERE nombrePerro LIKE %s"
         cursor.execute(sql, (f"%{nombre}%",))
         return cursor.fetchall()
     else:
@@ -31,7 +31,7 @@ def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
 
 def crearTutor(tutor:Tutor):
     sql = """
-    INSERT INTO tutores (nombre, telefono, direccion, dni)
+    INSERT INTO tutores (nombrePerro, telefono, direccion, dni)
     VALUES (%s, %s, %s, %s)
     """
     cursor.execute(sql,(tutor.nombre, tutor.telefono, tutor.direccion, tutor.dni))
@@ -40,7 +40,7 @@ def crearTutor(tutor:Tutor):
 def editarTutor(tutor:Tutor, id:int):
     sql = """
     UPDATE tutores
-    SET nombre = %s,
+    SET nombrePerro = %s,
         telefono = %s,
         direccion = %s,
         dni = %s

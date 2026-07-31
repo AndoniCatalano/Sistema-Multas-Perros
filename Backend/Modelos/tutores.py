@@ -3,7 +3,7 @@ from typing import Optional
 
 class Tutor(BaseModel):
     id: int
-    nombre: str
+    nombreTutor: str
     telefono: str
     direccion: str
     dni: str
