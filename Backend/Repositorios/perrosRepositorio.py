@@ -15,7 +15,7 @@ def buscarPerroId(id:int):
     cursor.execute(sql,(id,))
     return cursor.fetchone()
 
-def ObtenerPerros(color: str = None, genero: str = None, nombre: str = None, raza: str = None):
+def ObtenerPerros(edad:str = None, color: str = None, genero: str = None, nombre: str = None, raza: str = None):
     sql = """
     SELECT 
         p.*,
@@ -38,6 +38,9 @@ def ObtenerPerros(color: str = None, genero: str = None, nombre: str = None, raz
     if raza:
         condiciones.append("raza ILIKE %s")
         valores.append(f"%{raza}%")
+    if edad:
+        condiciones.append("edad = %s")
+        valores.append(edad)
 
     if condiciones:
         sql += " WHERE " + " AND ".join(condiciones)

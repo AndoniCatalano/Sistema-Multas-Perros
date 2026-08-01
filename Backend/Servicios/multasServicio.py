@@ -1,4 +1,5 @@
 import Repositorios.multasRepositorio as repo
+from Modelos.multas import Multa 
 
 def buscarMultaId(id:int):
     multa = repo.buscarMultaId(id)
@@ -45,3 +46,15 @@ def obtenerMultasTutor(id:int):
         multa.pop("tutorid")
         listado.append(multa)
     return listado
+
+def crearMulta(multa:Multa):
+    repo.crearMulta(multa)
+    return {"mensaje":"multa creada exitosamente"}
+
+def editarEstadoMulta(estado: chr, id: int):
+    repo.editarEstadoMulta(estado,id)
+    return {"mensaje":"multa editada exitosamente"}
+
+def eliminarMulta(id):
+    repo.eliminarMulta(id)
+    return {"mensaje":"multa eliminada exitosamente"}
