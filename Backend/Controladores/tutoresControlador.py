@@ -4,34 +4,27 @@ from Modelos.tutores import Tutor
 
 router = APIRouter()
 
-@router.get("/tutores")
-def obtenerTutores():
-    return servicio.obtenerTutores()
 
-@router.get("/tutores/id")
+@router.get("/tutores/buscar")
 def buscarTutorId(id: int):
     return servicio.buscarTutorId(id)
 
-@router.get("/tutores/dni")
-def buscarTutorDni(dni: str):
-    return servicio.buscarTutorDni(dni)
 
-@router.get("/tutores/nombre")
-def buscarTutorNombre(nombre: str):
-    return servicio.buscarTutorNombre(nombre)
+@router.get("/tutores")
+def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
+    return servicio.obtenerTutores(dni, nombre, telefono)
 
-@router.get("/tutores/telefono")
-def buscarTutorTelefono(telefono: str):
-    return servicio.buscarTutorTelefono(telefono)
 
-@router.post("/tutores/crear")
+@router.post("/tutores")
 def crearTutor(tutor: Tutor):
-    servicio.crearTutor(tutor)
+    return servicio.crearTutor(tutor)
 
-@router.put("/tutores/editar")
+
+@router.put("/tutores")
 def editarTutor(tutor: Tutor, id: int):
-    servicio.editarTutor(tutor, id)
+    return servicio.editarTutor(tutor, id)
 
-@router.delete("/tutores/eliminar")
+
+@router.delete("/tutores")
 def eliminaTutor(id: int):
-    servicio.eliminaTutor(id)
+    return servicio.eliminaTutor(id)
