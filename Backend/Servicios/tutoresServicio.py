@@ -1,28 +1,30 @@
-import Repositorios.tutoresRepositorio as repo
+from fastapi import APIRouter
+import Servicios.tutoresServicio as servicio
 from Modelos.tutores import Tutor
 
-def buscarTutorId(id:int):
-    tutor = repo.buscarTutorId(id)
-    tutor = dict(tutor)
-    tutor.pop("id")
-    return tutor
+router = APIRouter()
 
+
+@router.get("/tutores/buscar")
+def buscarTutorId(id: int):
+    return servicio.buscarTutorId(id)
+
+
+@router.get("/tutores")
 def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
-    tutores = repo.obtenerTutores(dni,nombre,telefono)
-    listado = []
-    for tutor in tutores:
-        tutor = dict(tutor)
-        listado.append(tutor)
-    return listado
+    return servicio.obtenerTutores(dni, nombre, telefono)
 
-def crearTutor(tutor:Tutor):
-    repo.crearTutor(tutor)
-    return{"mensaje":"tutor creado exitosamente"}
-    
-def editarTutor(tutor:Tutor, id:int):
-    repo.editarTutor(tutor,id)
-    return{"mensaje":"tutor editado exitosamente"}
 
-def eliminaTutor(id:int):
-    repo.eliminaTutor(id)
-    return{"mensaje":"tutor eliminado exitosamente"}
+@router.post("/tutores")
+def crearTutor(tutor: Tutor):
+    return servicio.crearTutor(tutor)
+
+
+@router.put("/tutores")
+def editarTutor(tutor: Tutor, id: int):
+    return servicio.editarTutor(tutor, id)
+
+
+@router.delete("/tutores")
+def eliminaTutor(id: int):
+    return servicio.eliminaTutor(id)

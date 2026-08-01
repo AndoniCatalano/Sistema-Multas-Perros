@@ -4,30 +4,35 @@ from Modelos.multas import Multa
 
 router = APIRouter()
 
-@router.get("/multas")
-def obtenerMultas():
-    return servicio.obtenerMultas()
-
-@router.get("/multas/id")
-def buscarMultaId(id:int):
+@router.get("/multas/buscar")
+def buscarMultaId(id: int):
     return servicio.buscarMultaId(id)
 
-@router.get("/multas/perroid")
-def obtenerMultasPerro(id:int):
+@router.get("/multas")
+def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int = None, estado: str = None):
+    return servicio.obtenerMultas(anio, mes, dia, hora, estado)
+
+
+@router.get("/multas/perro")
+def obtenerMultasPerro(id: int):
     return servicio.obtenerMultasPerro(id)
 
-@router.get("/multas/tutorid")
-def obtenerMultasTutor(id:int):
+
+@router.get("/multas/tutor")
+def obtenerMultasTutor(id: int):
     return servicio.obtenerMultasTutor(id)
 
-@router.post("/multas/crear")
-def crearMulta(multa:Multa):
-    servicio.crearMulta(multa)
 
-@router.put("/multas/editar")
-def editarEstadoMulta(estado:chr, id:int):
-    servicio.editarEstadoMulta(estado, id)
+@router.post("/multas")
+def crearMulta(multa: Multa):
+    return servicio.crearMulta(multa)
 
-@router.delete("/multas/eliminar")
-def eliminarMulta(id:int):
-    servicio.eliminarMulta(id)
+
+@router.patch("/multas")
+def editarEstadoMulta(id: int, estado: str):
+    return servicio.editarEstadoMulta(id, estado)
+
+
+@router.delete("/multas")
+def eliminarMulta(id: int):
+    return servicio.eliminarMulta(id)
