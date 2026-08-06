@@ -1,28 +1,27 @@
 from database import cursor, conexion
-from Modelos.multas import Multa
+from Modelos.multas import MultaBase, MultaCompleta, MultaTutor, MultaPerro, MultaListado, MultaCrear
 from datetime import datetime
 
 def buscarMultaId(id:int):
     sql = """
-    SELECT 
-        m.*,
-        t.nombreTutor AS nombreTutor,
-        t.direccion AS direccion,
-        t.telefono AS telefono,
-        p.nombrePerro AS nombrePerro
-    FROM multas m
-    JOIN tutores t ON m.tutorid = t.id
-    JOIN perros p ON m.perroid = p.id
-    WHERE m.id = %s
+        SELECT *
+        FROM multas m
+        JOIN tutores t ON m.tutorid = t.id
+        JOIN perros p ON m.perroid = p.id
+        WHERE m.id = %s
     """
     cursor.execute(sql,(id,))
-    return cursor.fetchone()
+    multa = cursor.fetchone()
+
+    if multa is None:
+        return None
+    else:
+        return MultaCompleta.modelo(multa)
+
 
 def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int = None, estado: str = None):    
     sql = """
-    SELECT 
-        m.*,
-        t.nombreTutor AS nombreTutor
+    SELECT *
     FROM multas m
     JOIN tutores t ON m.tutorid = t.id
     """
@@ -49,7 +48,12 @@ def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int 
         sql += " WHERE " + " AND ".join(condiciones)
 
     cursor.execute(sql, tuple(valores))
-    return cursor.fetchall()
+    multas = cursor.fetchall()
+
+    if multas is None:
+        return None
+    else:
+        return MultaListado.modeloLista(multas)
 
 
 def obtenerMultasPerro(id:int):
@@ -58,21 +62,28 @@ def obtenerMultasPerro(id:int):
     WHERE perroid = %s
     """
     cursor.execute(sql,(id,))
-    return cursor.fetchall()
-
+    multas = cursor.fetchall()
+    if multas is None:
+        return None
+    else:
+        return MultaPerro.modeloLista(multas)
+    
 def obtenerMultasTutor(id:int):
     sql = """
-    SELECT 
-        m.*,
-        p.nombrePerro AS nombrePerro
+    SELECT *
     FROM multas m
     JOIN perros p ON m.perroid = p.id
     WHERE tutorid = %s
     """
     cursor.execute(sql,(id,))
-    return cursor.fetchall()
+    multas = cursor.fetchall()
 
-def crearMulta(multa:Multa):
+    if multas is None:
+        return None
+    else:
+        return MultaTutor.modeloLista(multas)
+
+def crearMulta(multa:MultaCrear):
     sql = """
     INSERT INTO multas (monto, fechahora, perroid, tutorid, descripcion, estado)
     VALUES (%s, %s,%s,%s,%s,%s)

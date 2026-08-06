@@ -3,7 +3,7 @@ from Modelos.multas import Multa
 
 def buscarMultaId(id:int):
     multa = repo.buscarMultaId(id)
-
+    fromMultaToMultaDTO()
     if multa is None:
         return None
     else:

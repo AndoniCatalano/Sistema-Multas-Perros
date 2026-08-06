@@ -28,7 +28,6 @@ def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
         cursor.execute(sql)
         return cursor.fetchall()
 
-
 def crearTutor(tutor:Tutor):
     sql = """
     INSERT INTO tutores (nombrePerro, telefono, direccion, dni)
