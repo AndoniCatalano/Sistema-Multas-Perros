@@ -3,6 +3,7 @@ from pydantic import BaseModel
 class Perro(BaseModel):
 
     id:int
+    tutorid:int
     raza:str
     genero:str
     nombrePerro:str

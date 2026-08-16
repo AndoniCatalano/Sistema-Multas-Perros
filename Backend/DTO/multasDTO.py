@@ -5,7 +5,6 @@ from Modelos.tutores import Tutor
 
 class multaCompletaDTO:
     def __init__(self, multa:Multa, perro:Perro, tutor:Tutor):
-        self.id = multa.id
         self.estado = multa.estado
         self.monto = multa.monto
         self.descripcion = multa.descripcion
