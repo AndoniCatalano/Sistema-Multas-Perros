@@ -3,10 +3,15 @@ from datetime import datetime
 from typing import Optional
 from typing import Literal
 
-class MultaBase(BaseModel):
+class Multa(BaseModel):
+
+    id:int
     monto:float
     fechahora: Optional[datetime] = None
     estado: Literal["P","D"] = "D"
+    descripcion:str
+    perroid:int
+    tutorid:int
 
     @classmethod
     def modelo(cls,raw:dict):
@@ -15,23 +20,3 @@ class MultaBase(BaseModel):
     @classmethod
     def modeloLista(cls,rawLista: list[dict]):
         return [cls(**raw) for raw in rawLista]
-
-class MultaListado(MultaBase):
-    id:int
-    nombreTutor:str
-
-class MultaPerro(MultaBase):
-    descripcion:str
-
-class MultaTutor(MultaPerro):
-    nombrePerro:str
-
-class MultaCompleta(MultaTutor):
-    nombreTutor:str
-    direccion:str
-    telefono:str
-
-class MultaCrear(MultaBase):
-    perroid:int
-    tutorid:int
-    descripcion:str

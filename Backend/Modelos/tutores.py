@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class TutorBase(BaseModel):
+class Tutor(BaseModel):
+    id:int
     nombreTutor: str
     telefono: str
     direccion: str
@@ -14,6 +15,3 @@ class TutorBase(BaseModel):
     @classmethod
     def modeloLista(cls,rawLista:list[dict]):
         return[cls(**raw) for raw in rawLista]
-
-class TutorLista(TutorBase):
-    id:int

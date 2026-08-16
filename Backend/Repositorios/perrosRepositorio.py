@@ -13,7 +13,8 @@ def buscarPerroId(id:int):
     WHERE id = %s
     """
     cursor.execute(sql,(id,))
-    return cursor.fetchone()
+    perro = cursor.fetchone()
+    return Perro.modelo(perro)
 
 def ObtenerPerros(edad:str = None, color: str = None, genero: str = None, nombre: str = None, raza: str = None):
     sql = """
@@ -46,7 +47,8 @@ def ObtenerPerros(edad:str = None, color: str = None, genero: str = None, nombre
         sql += " WHERE " + " AND ".join(condiciones)
 
     cursor.execute(sql,(tuple(valores)))
-    return cursor.fetchall()
+    perros = cursor.fetchall()
+    return Perro.modeloLista(perros)
 
 def obtenerPerrosTutor(id:int):
     sql = """
@@ -54,7 +56,8 @@ def obtenerPerrosTutor(id:int):
     WHERE tutorid = %s
     """
     cursor.execute(sql,(id,))
-    return cursor.fetchall()
+    perros = cursor.fetchall()
+    return Perro.modeloLista(perros)
 
 def crearPerro(perro:Perro):
     sql = """

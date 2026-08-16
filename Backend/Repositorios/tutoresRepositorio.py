@@ -7,7 +7,8 @@ def buscarTutorId(id:int):
     WHERE id = %s
     """
     cursor.execute (sql,(id,))
-    return cursor.fetchone()
+    tutor = cursor.fetchone()
+    return Tutor.modelo(tutor)
 
 def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
     sql = "SELECT * FROM tutores"
@@ -26,7 +27,8 @@ def obtenerTutores(dni: str = None, nombre: str = None, telefono: str = None):
         return cursor.fetchall()
     else:
         cursor.execute(sql)
-        return cursor.fetchall()
+        tutores = cursor.fetchall()
+        return Tutor.modelo(tutores)
 
 def crearTutor(tutor:Tutor):
     sql = """

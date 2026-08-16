@@ -1,13 +1,15 @@
 from pydantic import BaseModel
 
 class Perro(BaseModel):
+
+    id:int
     raza:str
     genero:str
     nombrePerro:str
     color:str
     edad:str
     foto:str
-
+    
     @classmethod
     def modelo(cls,raw:dict):
         return cls(**raw)
@@ -15,11 +17,3 @@ class Perro(BaseModel):
     @classmethod
     def modeloLista(cls,rawLista: list[dict]):
         return[cls(**raw) for raw in rawLista]
-
-class PerroParcial(Perro):
-    id:int
-    nombreTutor:str
-
-class PerroCompleto(PerroParcial):
-    direccion:str
-    telefono:str

@@ -1,3 +1,5 @@
+##TRY CATCH/THROW manejo de errores###
+
 import Repositorios.multasRepositorio as repo
 from Modelos.multas import Multa 
 

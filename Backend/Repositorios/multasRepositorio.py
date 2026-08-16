@@ -1,6 +1,5 @@
 from database import cursor, conexion
-from Modelos.multas import MultaBase, MultaCompleta, MultaTutor, MultaPerro, MultaListado, MultaCrear
-from datetime import datetime
+from Modelos.multas import Multa
 
 def buscarMultaId(id:int):
     sql = """
@@ -16,7 +15,7 @@ def buscarMultaId(id:int):
     if multa is None:
         return None
     else:
-        return MultaCompleta.modelo(multa)
+        return Multa.modelo(multa)
 
 
 def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int = None, estado: str = None):    
@@ -53,7 +52,7 @@ def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int 
     if multas is None:
         return None
     else:
-        return MultaListado.modeloLista(multas)
+        return Multa.modeloLista(multas)
 
 
 def obtenerMultasPerro(id:int):
@@ -66,7 +65,7 @@ def obtenerMultasPerro(id:int):
     if multas is None:
         return None
     else:
-        return MultaPerro.modeloLista(multas)
+        return Multa.modeloLista(multas)
     
 def obtenerMultasTutor(id:int):
     sql = """
@@ -81,9 +80,9 @@ def obtenerMultasTutor(id:int):
     if multas is None:
         return None
     else:
-        return MultaTutor.modeloLista(multas)
+        return Multa.modeloLista(multas)
 
-def crearMulta(multa:MultaCrear):
+def crearMulta(multa:Multa):
     sql = """
     INSERT INTO multas (monto, fechahora, perroid, tutorid, descripcion, estado)
     VALUES (%s, %s,%s,%s,%s,%s)
