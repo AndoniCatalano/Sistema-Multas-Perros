@@ -1,62 +1,88 @@
 ##TRY CATCH/THROW manejo de errores###
+import logging
+import Repositorios.multasRepositorio as repoMultas
+import Repositorios.perrosRepositorio as repoPerros
+import Repositorios.tutoresRepositorio as repoTutores
+import DTO.multasDTO as dto
 
-import Repositorios.multasRepositorio as repo
 from Modelos.multas import Multa 
 
-def buscarMultaId(id:int):
-    multa = repo.buscarMultaId(id)
-    fromMultaToMultaDTO()
-    if multa is None:
-        return None
-    else:
-        dict(multa)
-        multa.pop("id")
-        return multa
-    
-def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int = None, estado: str = None):
-    multas = repo.obtenerMultas(anio,mes,dia,hora,estado)
 
-    listado = []
-    for multa in multas:
-        multa = dict(multa)
-        multa.pop("descripcion",None)
-        multa.pop("perroid")
-        multa.pop("tutorid")
-        listado.append(multa)
-    return listado
+
+#ademas debe traer nombre del perro y tutor
+#direccion y telefono
+def buscarMultaId(id:int):
+
+    try:
+        multa = repoMultas.buscarMultaId(id)
+        if multa is None:
+            return ValueError(f"No se encontro la multa")
+
+        perro = repoPerros.buscarPerroId(multa.perroid)
+        tutor = repoTutores.buscarTutorId(multa.tutorid)
+
+        if perro is None and tutor is None:
+            return ValueError(f"La multa existe pero no existe el perro ni tutor")
+
+        return dto.multaCompletaDTO(multa,perro,tutor)
+
+    except Exception as e:
+        logging.error(f"Error al buscar la multa: {str(e)}")
+        raise e 
+
+#ademas debe traer el nombre del tutor
+def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int = None, estado: str = None):
+    try:
+        multas = repoMultas.obtenerMultas(anio,mes,dia,hora,estado)
+        listado = []
+
+        for multa in multas:
+            tutor = repoTutores.buscarTutorId(multa.tutorid)
+            listado.append(dto.multaListaDTO(multa,tutor))
+
+        return listado
+
+    except Exception as e:
+        logging.error(f"Error al obtener multas: {str(e)}")
+        raise e
+
 
 def obtenerMultasPerro(id:int):
-    multas = repo.obtenerMultasPerro(id)
+    try:
+        multas = repoMultas.obtenerMultasPerro(id)
+        listado = []
 
-    listado = []
-    for multa in multas:
-        multa = dict(multa)
-        multa.pop("id")
-        multa.pop("perroid")
-        multa.pop("tutorid")
-        listado.append(multa)
-    return listado
+        for multa in multas:
+            listado.append(dto.multaPerroDTO(multa))
+
+        return listado
+
+    except Exception as e:
+        logging.error(f"error al obtener multas:{str(e)}")
+        return e
 
 def obtenerMultasTutor(id:int):
-    multas = repo.obtenerMultasTutor(id)
+    try:
+        listado = []
+        multas = repoMultas.obtenerMultasTutor(id)
 
-    listado = []
-    for multa in multas:
-        multa = dict(multa)
-        multa.pop("id")
-        multa.pop("perroid")
-        multa.pop("tutorid")
-        listado.append(multa)
-    return listado
+        for multa in multas:
+            listado.append(dto.multaTutorDTO(multa))
+
+        return listado
+
+    except Exception as e:
+        logging(f"Error al obtener multas: {str(e)}")
+        raise e
 
 def crearMulta(multa:Multa):
-    repo.crearMulta(multa)
+    repoMultas.crearMulta(multa)
     return {"mensaje":"multa creada exitosamente"}
 
 def editarEstadoMulta(estado: chr, id: int):
-    repo.editarEstadoMulta(estado,id)
+    repoMultas.editarEstadoMulta(estado,id)
     return {"mensaje":"multa editada exitosamente"}
 
 def eliminarMulta(id):
-    repo.eliminarMulta(id)
+    repoMultas.eliminarMulta(id)
     return {"mensaje":"multa eliminada exitosamente"}
