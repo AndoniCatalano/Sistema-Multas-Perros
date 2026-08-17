@@ -16,7 +16,7 @@ def buscarMultaId(id:int):
     try:
         multa = repoMultas.buscarMultaId(id)
         if multa is None:
-            raise ValueError(f"No se encontro la multa")
+            raise ValueError(f"Multa no encontrada")
 
         perro = repoPerros.buscarPerroId(multa.perroid)
         tutor = repoTutores.buscarTutorId(multa.tutorid)
