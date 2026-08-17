@@ -16,13 +16,13 @@ def buscarMultaId(id:int):
     try:
         multa = repoMultas.buscarMultaId(id)
         if multa is None:
-            return ValueError(f"No se encontro la multa")
+            raise ValueError(f"No se encontro la multa")
 
         perro = repoPerros.buscarPerroId(multa.perroid)
         tutor = repoTutores.buscarTutorId(multa.tutorid)
 
-        if perro is None and tutor is None:
-            return ValueError(f"La multa existe pero no existe el perro ni tutor")
+        if perro is None or tutor is None:
+            raise ValueError(f"La multa existe pero no existe el perro y/o tutor")
 
         return dto.multaCompletaDTO(multa,perro,tutor)
 
@@ -59,7 +59,7 @@ def obtenerMultasPerro(id:int):
 
     except Exception as e:
         logging.error(f"error al obtener multas:{str(e)}")
-        return e
+        raise e
 
 def obtenerMultasTutor(id:int):
     try:
@@ -72,7 +72,7 @@ def obtenerMultasTutor(id:int):
         return listado
 
     except Exception as e:
-        logging(f"Error al obtener multas: {str(e)}")
+        logging.error(f"Error al obtener multas: {str(e)}")
         raise e
 
 def crearMulta(multa:Multa):

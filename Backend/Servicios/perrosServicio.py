@@ -9,7 +9,7 @@ def buscarPerroId(id:int):
     try:
         perro = repoPerros.buscarPerroId(id)
         if perro is None:
-            return ValueError("Perro no encontrado")
+            raise ValueError("Perro no encontrado")
 
         tutor = repoTutores.buscarTutorId(perro.tutorid)
         return dto.perroCompletoDTO(perro,tutor)
@@ -23,7 +23,7 @@ def ObtenerPerros(color: str = None, genero: str = None, nombre: str = None, raz
         perros = repoPerros.ObtenerPerros(color,genero,nombre,raza)
         listado = []
         for perro in perros:
-            tutor = repoTutores.obtenerTutores(perro.tutorid)
+            tutor = repoTutores.buscarTutorId(perro.tutorid)
             listado.append(dto.perroListadoDTO(perro,tutor))
 
         return listado
@@ -46,15 +46,26 @@ def obtenerPerrosTutor(id:int):
         logging.error(f"Error al obtener perros: {str(e)}")
         raise e
 
-def crearPerro(perro:Perro):
-    repoPerros.crearPerro(perro)
-    return{"mensaje":"perro creado exitosamente"}
+def crearPerro(perro: Perro):
+    try:
+        repoPerros.crearPerro(perro)
+        return {"mensaje": "Perro creado exitosamente"}
+    except Exception as e:
+        logging.error(f"Error al crear perro: {str(e)}")
+        raise e
 
-def editarPerro(perro:Perro, id:int):
-    repoPerros.editarPerro(perro, id)
-    return{"mensaje":"perro editado exitosamente"}
+def editarPerro(perro: Perro, id: int):
+    try:
+        repoPerros.editarPerro(perro, id)
+        return {"mensaje": "Perro editado exitosamente"}
+    except Exception as e:
+        logging.error(f"Error al editar perro {id}: {str(e)}")
+        raise e
 
-def eliminarPerro(id:int):
-    repoPerros.eliminarPerro(id)
-    return{"mensaje":"perro eliminado exitosamente"}
-
+def eliminarPerro(id: int):
+    try:
+        repoPerros.eliminarPerro(id)
+        return {"mensaje": "Perro eliminado exitosamente"}
+    except Exception as e:
+        logging.error(f"Error al eliminar perro {id}: {str(e)}")
+        raise e
