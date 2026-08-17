@@ -4,10 +4,8 @@ from Modelos.multas import Multa
 def buscarMultaId(id:int):
     sql = """
         SELECT *
-        FROM multas m
-        JOIN tutores t ON m.tutorid = t.id
-        JOIN perros p ON m.perroid = p.id
-        WHERE m.id = %s
+        FROM multas
+        WHERE id = %s
     """
     cursor.execute(sql,(id,))
     multa = cursor.fetchone()
@@ -21,8 +19,7 @@ def buscarMultaId(id:int):
 def obtenerMultas(anio: int = None, mes: int = None, dia: int = None, hora: int = None, estado: str = None):    
     sql = """
     SELECT *
-    FROM multas m
-    JOIN tutores t ON m.tutorid = t.id
+    FROM multas
     """
     condiciones = []
     valores = []
@@ -70,8 +67,7 @@ def obtenerMultasPerro(id:int):
 def obtenerMultasTutor(id:int):
     sql = """
     SELECT *
-    FROM multas m
-    JOIN perros p ON m.perroid = p.id
+    FROM multas
     WHERE tutorid = %s
     """
     cursor.execute(sql,(id,))

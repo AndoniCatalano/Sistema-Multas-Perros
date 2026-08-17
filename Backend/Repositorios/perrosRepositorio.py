@@ -3,13 +3,8 @@ from Modelos.perros import Perro
 
 def buscarPerroId(id:int):
     sql = """
-    SELECT 
-        p.*,
-        t.nombreTutor AS nombreTutor,
-        t.direccion AS direccion,
-        t.telefono AS telefono
-    FROM perros AS p 
-    JOIN tutores t ON p.tutorid = t.id
+    SELECT *
+    FROM perros
     WHERE id = %s
     """
     cursor.execute(sql,(id,))
@@ -18,11 +13,8 @@ def buscarPerroId(id:int):
 
 def ObtenerPerros(edad:str = None, color: str = None, genero: str = None, nombre: str = None, raza: str = None):
     sql = """
-    SELECT 
-        p.*,
-        t.nombreTutor AS nombreTutor
-    FROM perros p 
-    JOIN tutores t ON p.tutorid = t.id
+    SELECT *
+    FROM perros 
     """
     condiciones = []
     valores = []
